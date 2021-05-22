@@ -12,7 +12,8 @@ u16 CalculateCRC16FromBannerData(const u8* banner_data) {
 
     u16 checksum = 0xFFFF;
 
-    for (size_t i = 0; i < 0x820; i++) {
+    const std::size_t data_size = sizeof(Banner) - offsetof(Banner, bitmap);
+    for (std::size_t i = 0; i < data_size; i++) {
         u16 lookup_index = crc_table[banner_data[i] & 0xF] ^ (checksum >> 4) ^ crc_table[checksum & 0xF];
         checksum = crc_table[banner_data[i] >> 4] ^ (lookup_index >> 4) ^ crc_table[lookup_index & 0xF];
     }

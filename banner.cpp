@@ -244,6 +244,7 @@ bool MakeBanner(const std::filesystem::path& specfile_path, const std::filesyste
     std::copy(specfile_data.italian_title.begin(), specfile_data.italian_title.end(), banner.italian_title.data());
     std::copy(specfile_data.spanish_title.begin(), specfile_data.spanish_title.end(), banner.spanish_title.data());
 
+    // checksum the banner data, starting from the icon bitmap and ending at the end of the file.
     banner.crc = CalculateCRC16FromBannerData(banner.bitmap.data());
 
     // check against diamond's icon crc
