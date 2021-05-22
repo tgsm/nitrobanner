@@ -219,7 +219,11 @@ void OutputBanner(std::ofstream& ostream, const Banner& banner) {
 bool MakeBanner(const std::filesystem::path& specfile_path, const std::filesystem::path& outfile_path) {
     std::ofstream ostream(outfile_path, std::ios::binary);
     if (!ostream.is_open()) {
+#ifdef _MSC_VER
         printf("error: could not open %ls for writing\n", outfile_path.c_str());
+#else
+        printf("error: could not open %s for writing\n", outfile_path.c_str());
+#endif
         return false;
     }
 
