@@ -3,6 +3,10 @@
 #include <filesystem>
 #include "banner.h"
 
+#ifdef _MSC_VER
+#define strcasecmp _stricmp
+#endif
+
 int main(int argc, char* argv[]) {
     if (argc != 2 && argc != 3) {
         printf("usage: %s <specfile> [outfile]\n", argv[0]);

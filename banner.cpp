@@ -3,6 +3,7 @@
 #include <exception>
 #include <fstream>
 #include <locale>
+#include <string>
 #include "banner.h"
 #include "crc16.h"
 
@@ -28,12 +29,10 @@ SpecFileData ParseSpecFile(const std::filesystem::path& specfile_path) {
         throw std::runtime_error("could not open specfile " + specfile_path.string() + " for parsing");
     }
 
-#ifndef _MSC_VER
     // convert utf-16 to utf-32
     stream.imbue(std::locale(stream.getloc(), new std::codecvt_utf16<wchar_t, 0x10ffff, std::little_endian>));
-#endif
 
-    // first character of the has to be U+FEFF.
+    // first character of the file has to be U+FEFF.
     if (stream.get() != 0xFEFF) {
         throw std::runtime_error("specfile must be encoded as UTF-16");
     }
@@ -53,7 +52,7 @@ SpecFileData ParseSpecFile(const std::filesystem::path& specfile_path) {
         const std::wstring command_argument = line.substr(beginning_of_command_argument, line.size());
 
         if (command_name == L"Version") {
-            throw std::runtime_error("Version command is currently unsupported, defaulting to version 1");
+            printf("warning: Version command is currently unsupported, defaulting to version 1\n");
             specfile_data.version = 1;
         } else if (command_name == L"ImageFile") {
             specfile_data.icon_bitmap_filename = command_argument;
@@ -220,7 +219,7 @@ void OutputBanner(std::ofstream& ostream, const Banner& banner) {
 bool MakeBanner(const std::filesystem::path& specfile_path, const std::filesystem::path& outfile_path) {
     std::ofstream ostream(outfile_path, std::ios::binary);
     if (!ostream.is_open()) {
-        printf("error: could not open %s for writing\n", outfile_path.c_str());
+        printf("error: could not open %ls for writing\n", outfile_path.c_str());
         return false;
     }
 
