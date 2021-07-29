@@ -15,12 +15,27 @@ void SerializeData(std::ofstream& ostream, T data) {
 }
 
 std::wstring GetTitleAndDeveloperFromSpecCommandArgument(std::wifstream& stream, const std::wstring& command_argument) {
-    std::wstring developer;
-    std::getline(stream, developer);
-    developer = developer.substr(developer.find_first_not_of(L' '), developer.size());
+    std::wstring title_and_developer = command_argument;
+    constexpr int max_lines = 3;
+    int current_line = 1;
 
-    const std::wstring title_and_developer = command_argument + L'\n' + developer;
-    return title_and_developer;
+    while (true) {
+        wchar_t first_char = stream.get();
+        stream.unget();
+        if (first_char != L' ') {
+            return title_and_developer;
+        }
+
+        if (current_line++ == max_lines) {
+            throw std::runtime_error("Title and developer can not be more than " + std::to_string(max_lines) + " lines");
+        }
+
+        std::wstring line;
+        std::getline(stream, line);
+
+        title_and_developer += '\n';
+        title_and_developer += line.substr(line.find_first_not_of(L' '), line.size());
+    }
 }
 
 SpecFileData ParseSpecFile(const std::filesystem::path& specfile_path) {
