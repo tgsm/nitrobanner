@@ -58,35 +58,33 @@ SpecFileData ParseSpecFile(const std::filesystem::path& specfile_path) {
             specfile_data.icon_bitmap_filename = command_argument;
         } else if (command_name == L"PlttFile") {
             specfile_data.icon_palette_filename = command_argument;
-        } else if (command_name == L"JP") {
+        } else if (CommandIsForTitleAndDeveloper(command_name)) {
             const std::wstring& title_and_developer = GetTitleAndDeveloperFromSpecCommandArgument(stream, command_argument);
-            for (wchar_t c : title_and_developer) {
-                specfile_data.japanese_title += char16_t(c);
-            }
-        } else if (command_name == L"EN") {
-            const std::wstring& title_and_developer = GetTitleAndDeveloperFromSpecCommandArgument(stream, command_argument);
-            for (wchar_t c : title_and_developer) {
-                specfile_data.english_title += char16_t(c);
-            }
-        } else if (command_name == L"FR") {
-            const std::wstring& title_and_developer = GetTitleAndDeveloperFromSpecCommandArgument(stream, command_argument);
-            for (wchar_t c : title_and_developer) {
-                specfile_data.french_title += char16_t(c);
-            }
-        } else if (command_name == L"GE") {
-            const std::wstring& title_and_developer = GetTitleAndDeveloperFromSpecCommandArgument(stream, command_argument);
-            for (wchar_t c : title_and_developer) {
-                specfile_data.german_title += char16_t(c);
-            }
-        } else if (command_name == L"IT") {
-            const std::wstring& title_and_developer = GetTitleAndDeveloperFromSpecCommandArgument(stream, command_argument);
-            for (wchar_t c : title_and_developer) {
-                specfile_data.italian_title += char16_t(c);
-            }
-        } else if (command_name == L"SP") {
-            const std::wstring& title_and_developer = GetTitleAndDeveloperFromSpecCommandArgument(stream, command_argument);
-            for (wchar_t c : title_and_developer) {
-                specfile_data.spanish_title += char16_t(c);
+
+            if (command_name == L"JP") {
+                for (wchar_t c : title_and_developer) {
+                    specfile_data.japanese_title += char16_t(c);
+                }
+            } else if (command_name == L"EN") {
+                for (wchar_t c : title_and_developer) {
+                    specfile_data.english_title += char16_t(c);
+                }
+            } else if (command_name == L"FR") {
+                for (wchar_t c : title_and_developer) {
+                    specfile_data.french_title += char16_t(c);
+                }
+            } else if (command_name == L"GE") {
+                for (wchar_t c : title_and_developer) {
+                    specfile_data.german_title += char16_t(c);
+                }
+            } else if (command_name == L"IT") {
+                for (wchar_t c : title_and_developer) {
+                    specfile_data.italian_title += char16_t(c);
+                }
+            } else if (command_name == L"SP") {
+                for (wchar_t c : title_and_developer) {
+                    specfile_data.spanish_title += char16_t(c);
+                }
             }
         } else {
             printf("warning: unsupported command '%ls', ignoring...\n", command_name.data());

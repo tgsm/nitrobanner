@@ -50,3 +50,12 @@ IconPalette GetIconPalette(const std::filesystem::path& icon_palette_filename);
 
 void OutputBanner(std::ofstream& ostream, const Banner& banner);
 bool MakeBanner(const std::filesystem::path& specfile_path, const std::filesystem::path& outfile_path);
+
+inline bool CommandIsForTitleAndDeveloper(const std::wstring& command_name) {
+    return command_name == L"JP" ||
+           command_name == L"EN" ||
+           command_name == L"FR" ||
+           command_name == L"GE" ||
+           command_name == L"IT" ||
+           command_name == L"SP";
+}
